@@ -1,27 +1,9 @@
-import movies, { deleteMovie, addMovie, getMovie } from "./db"
-import {getByID} from "./db"
+import  { getMovie } from "./db"
 const resolvers = {
     Query:{
-        movies :()=>{            
-            return getMovie();
-        },
-        movie:(_,{id})=>getByID(id),
-            
-        /*{
-            const filteredpeople = people.filter(person => {
-                return args.name === person.name
-            })
-            return filteredpeople[0];
-        }/* 같은 코드 -> person:(_,{name})=>{
-            const filteredpeople = people.filter(person => {
-                return name === person.name
-            })
-            return filteredpeople[0];
-        }*/
-    },
-    Mutation:{
-        deleteMovie:(_,{id})=>deleteMovie(id),
-        addMovie:(_,{name,score})=>addMovie(name,score)
+        movies :(_,{limit,rating})=>{            
+            return getMovie(limit,rating);//현재 무비로 받아와야됨 이 파일의 무비와 db파일의 무비가 같은 변수가 아님.
+        }
     }
 
 }

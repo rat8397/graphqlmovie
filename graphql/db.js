@@ -1,55 +1,19 @@
-let movies = [
-    {
-        id:1,
-        name:"AVENGERS",
-        score:8
-    },
-    {
-        id:2,
-        name:"THE GODFATHER",
-        score:99
-    },
-    {
-        id:3,
-        name:"LOGAN",
-        score:2
-    },
-    {
-        id:4,
-        name:"MONSTER",
-        score:100
-    },
+import fetch from "node-fetch";
+const API_URL = "https://yts.mx/api/v2/list_movies.json?";
 
-]
-export const getByID=(id)=>{
-    const filteredMovie = movies.filter(movie =>{
-        return id === movie.id;
-    })//중요점 --> filter 함수는 배열형으로 리턴하므로 3
-    return filteredMovie[0];
-    
-}
-export const deleteMovie = (id)=>{
-    const cleanMovies = movies.filter(movie =>{
-        return movie.id !== id
-    })
-    if(movies.length > cleanMovies.length){//삭제를 해줘야하는 경우.
-        movies = cleanMovies;
-        console.log(movies)
-        return true;
-    }else{//삭제를 못하는 경우 아이디가 일치하는것이없거나 다른 문제가 있는 경우이다.
-        return false;
-    }
-}
-export const addMovie = (name,score) =>{
-    const newMovie = {
-        id:`${movies.length+1}`,
-        name : name,
-        score : score
-    }
-    movies.push(newMovie);
-    return newMovie;
-}
-export const getMovie = ()=>{
-    return movies
-}
-export default movies;
+export const getMovie = (limit, rating) => {
+  let REQUEST_URL = API_URL;
+
+  if (limit > 0) {
+    REQUEST_URL = REQUEST_URL + `limit=${limit}`;
+  }
+  if (rating > 0) {
+    REQUEST_URL = REQUEST_URL + `&minimum_rating=${rating}`;
+  }
+  return fetch(REQUEST_URL).then((response) => {
+    return response.json().then((json) => {
+      // json -> json 파일을 의미함.
+      return json.data.movies;
+    });
+  });
+};
