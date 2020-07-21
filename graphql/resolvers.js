@@ -1,14 +1,12 @@
-import people from "./db"
+import movies, { deleteMovie, addMovie, getMovie } from "./db"
 import {getByID} from "./db"
 const resolvers = {
     Query:{
-        people :()=>{
-            const people_two = [
-                people[0],people[1]
-            ]
-            return people_two
+        movies :()=>{            
+            return getMovie();
         },
-        person:(_,{id})=>getByID(id)
+        movie:(_,{id})=>getByID(id),
+            
         /*{
             const filteredpeople = people.filter(person => {
                 return args.name === person.name
@@ -20,6 +18,11 @@ const resolvers = {
             })
             return filteredpeople[0];
         }*/
+    },
+    Mutation:{
+        deleteMovie:(_,{id})=>deleteMovie(id),
+        addMovie:(_,{name,score})=>addMovie(name,score)
     }
+
 }
 export default resolvers
